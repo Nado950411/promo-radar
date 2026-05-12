@@ -5,13 +5,14 @@ import { mockUserProfile } from '@/lib/mock-data';
 import { Category } from '@/types';
 import { useToast } from '@/context/ToastContext';
 import { useTheme } from '@/context/ThemeContext';
-import { Badge } from '@/components/ui/Badge';
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
 import {
   User, MapPin, Bell, Moon, Sun, ChevronRight,
   ShoppingBag, Heart, Star, LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 const ALL_CATEGORIES: { label: Category; emoji: string }[] = [
   { label: 'Alimentos', emoji: '🍚' },
@@ -28,6 +29,7 @@ export default function PerfilPage() {
   const [profile, setProfile] = useState(mockUserProfile);
   const { showToast } = useToast();
   const { theme, toggleTheme } = useTheme();
+  const { user, loading, signInWithGoogle, signOut } = useAuth();
 
   const toggleCategory = (cat: Category) => {
     setProfile(prev => ({
@@ -40,16 +42,66 @@ export default function PerfilPage() {
 
   const save = () => showToast('Preferências salvas!', 'success');
 
+  const handleSignOut = async () => {
+    await signOut();
+    showToast('Até logo!', 'success');
+  };
+
+  const displayName = user?.user_metadata?.full_name ?? user?.email ?? mockUserProfile.name;
+  const displayEmail = user?.email ?? mockUserProfile.email;
+  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined;
+
+  if (loading) {
+    return (
+      <div className="pb-24 space-y-4 animate-pulse">
+        <div className="bg-slate-200 dark:bg-slate-700 rounded-2xl h-40" />
+        <div className="bg-slate-200 dark:bg-slate-700 rounded-2xl h-28" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="pb-24 flex flex-col items-center justify-center min-h-[70vh] gap-6 px-4">
+        <div className="w-20 h-20 bg-violet-100 dark:bg-violet-900/30 rounded-full flex items-center justify-center">
+          <User size={36} className="text-violet-600 dark:text-violet-400" />
+        </div>
+        <div className="text-center">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Entre na sua conta</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Salve favoritos, alertas e preferências em qualquer dispositivo
+          </p>
+        </div>
+        <button
+          onClick={signInWithGoogle}
+          className="flex items-center gap-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-6 py-3.5 shadow-sm hover:shadow-md transition-all w-full max-w-xs justify-center"
+        >
+          <svg viewBox="0 0 48 48" width="20" height="20">
+            <path fill="#4285F4" d="M47.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h13.2c-.6 3-2.3 5.5-4.8 7.2v6h7.7c4.5-4.2 7.4-10.3 7.4-17.2z"/>
+            <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.1 1.4-4.8 2.3-8.2 2.3-6.3 0-11.6-4.2-13.5-9.9H2.6v6.2C6.5 42.6 14.7 48 24 48z"/>
+            <path fill="#FBBC05" d="M10.5 28.6A14.8 14.8 0 0 1 9.8 24c0-1.6.3-3.1.7-4.6v-6.2H2.6A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.2z"/>
+            <path fill="#EA4335" d="M24 9.5c3.5 0 6.7 1.2 9.2 3.6l6.9-6.9C35.9 2.1 30.4 0 24 0 14.7 0 6.5 5.4 2.6 13.2l7.9 6.2C12.4 13.7 17.7 9.5 24 9.5z"/>
+          </svg>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Entrar com Google</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="pb-24 space-y-4">
       <div className="bg-gradient-to-br from-violet-600 to-purple-700 rounded-2xl p-5 text-white">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl">
-            {profile.avatar}
+          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl overflow-hidden">
+            {avatarUrl ? (
+              <Image src={avatarUrl} alt={displayName} width={64} height={64} className="w-full h-full object-cover" />
+            ) : (
+              <User size={28} className="text-white" />
+            )}
           </div>
           <div>
-            <h2 className="text-lg font-bold">{profile.name}</h2>
-            <p className="text-white/80 text-sm">{profile.email}</p>
+            <h2 className="text-lg font-bold">{displayName}</h2>
+            <p className="text-white/80 text-sm">{displayEmail}</p>
             <div className="flex items-center gap-1 mt-1">
               <MapPin size={12} className="text-white/70" />
               <span className="text-xs text-white/70">{profile.location}</span>
@@ -194,7 +246,10 @@ export default function PerfilPage() {
         Salvar preferências
       </Button>
 
-      <button className="w-full flex items-center justify-center gap-2 py-3 text-sm text-red-500 hover:text-red-600 transition-colors">
+      <button
+        onClick={handleSignOut}
+        className="w-full flex items-center justify-center gap-2 py-3 text-sm text-red-500 hover:text-red-600 transition-colors"
+      >
         <LogOut size={16} />
         Sair da conta
       </button>
