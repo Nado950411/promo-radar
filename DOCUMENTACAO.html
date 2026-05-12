@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PromoRadar — Documentação Completa</title>
+  <style>
+    :root {
+      --violet: #7C3AED;
+      --violet-light: #EDE9FE;
+      --violet-dark: #5B21B6;
+      --orange: #F97316;
+      --emerald: #10B981;
+      --slate-900: #0F172A;
+      --slate-800: #1E293B;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748B;
+      --slate-400: #94A3B8;
+      --slate-200: #E2E8F0;
+      --slate-100: #F1F5F9;
+      --slate-50: #F8FAFC;
+      --white: #FFFFFF;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--slate-50);
+      color: var(--slate-800);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Print button ── */
+    .print-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      background: var(--violet);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(124,58,237,.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all .2s;
+    }
+    .print-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,.5); }
+
+    /* ── Layout ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* ── Cover ── */
+    .cover {
+      background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 50%, #9333EA 100%);
+      color: white;
+      padding: 64px 24px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .cover-logo {
+      width: 72px; height: 72px;
+      background: rgba(255,255,255,.2);
+      border-radius: 20px;
+      margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+    }
+    .cover h1 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+    .cover .subtitle { font-size: 16px; opacity: .85; margin-bottom: 32px; }
+    .cover-tags { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .cover-tag {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .cover-meta {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+    .cover-stat { text-align: center; }
+    .cover-stat .num { font-size: 28px; font-weight: 800; }
+    .cover-stat .lbl { font-size: 11px; opacity: .7; margin-top: 2px; }
+
+    /* ── TOC ── */
+    .toc {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid var(--slate-200);
+      margin-bottom: 32px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    }
+    .toc h2 { font-size: 16px; color: var(--violet); margin-bottom: 16px; }
+    .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .toc a {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 10px;
+      text-decoration: none; color: var(--slate-700);
+      font-size: 13px;
+      transition: background .15s;
+    }
+    .toc a:hover { background: var(--violet-light); color: var(--violet); }
+    .toc-num {
+      width: 22px; height: 22px; border-radius: 8px;
+      background: var(--violet-light); color: var(--violet);
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 40px; }
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--violet-light);
+    }
+    .section-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--violet-light); color: var(--violet);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .section-title { font-size: 20px; font-weight: 700; color: var(--slate-900); }
+    .section-num { font-size: 13px; color: var(--violet); font-weight: 600; }
+
+    /* ── Cards ── */
+    .card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid var(--slate-200);
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+      margin-bottom: 16px;
+    }
+    .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .card-emoji { font-size: 24px; }
+    .card-title { font-size: 15px; font-weight: 700; color: var(--slate-900); }
+    .card-subtitle { font-size: 12px; color: var(--slate-500); margin-top: 2px; }
+
+    /* ── Grid cards ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+    /* ── Feature list ── */
+    .feature-list { list-style: none; }
+    .feature-list li {
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--slate-100);
+      font-size: 13px; color: var(--slate-700);
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list .check { color: var(--emerald); font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── File tree ── */
+    .file-tree {
+      background: var(--slate-900);
+      border-radius: 14px;
+      padding: 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 12.5px;
+      line-height: 1.9;
+      color: #94A3B8;
+      overflow-x: auto;
+    }
+    .ft-folder { color: #60A5FA; font-weight: 600; }
+    .ft-file { color: #A5F3FC; }
+    .ft-new { color: #86EFAC; }
+    .ft-comment { color: #6B7280; font-style: italic; }
+    .ft-label {
+      display: inline-block;
+      background: rgba(134,239,172,.15);
+      color: #86EFAC;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+    .ft-label-upd {
+      background: rgba(251,191,36,.15);
+      color: #FCD34D;
+    }
+
+    /* ── Tech stack ── */
+    .tech-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--slate-200);
+      padding: 16px;
+      text-align: center;
+    }
+    .tech-card .emoji { font-size: 28px; margin-bottom: 8px; }
+    .tech-card .name { font-size: 13px; font-weight: 700; color: var(--slate-800); }
+    .tech-card .version { font-size: 11px; color: var(--slate-400); margin-top: 2px; }
+
+    /* ── Screen previews ── */
+    .screen-card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid var(--slate-200);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    }
+    .screen-top {
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .screen-emoji { font-size: 28px; }
+    .screen-title { font-size: 14px; font-weight: 700; color: var(--slate-900); }
+    .screen-path {
+      font-family: monospace; font-size: 11px;
+      color: var(--violet); background: var(--violet-light);
+      padding: 2px 8px; border-radius: 6px; margin-top: 3px;
+      display: inline-block;
+    }
+    .screen-body { padding: 0 16px 16px; }
+    .screen-feature {
+      font-size: 12px; color: var(--slate-600);
+      padding: 4px 0;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .screen-feature::before { content: "→"; color: var(--violet); font-weight: 700; }
+    .screen-new-tag {
+      background: #DCFCE7; color: #15803D;
+      font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 50px;
+      margin-left: auto;
+    }
+    .screen-upd-tag {
+      background: #FEF3C7; color: #92400E;
+      font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 50px;
+      margin-left: auto;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 50px;
+      font-size: 11px; font-weight: 600;
+    }
+    .badge-new { background: #DCFCE7; color: #15803D; }
+    .badge-upd { background: #FEF3C7; color: #92400E; }
+    .badge-violet { background: var(--violet-light); color: var(--violet); }
+
+    /* ── Config blocks ── */
+    .config-block {
+      background: var(--slate-900);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #E2E8F0;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .config-comment { color: #64748B; }
+    .config-key { color: #93C5FD; }
+    .config-val { color: #86EFAC; }
+    .config-str { color: #FCA5A5; }
+
+    /* ── Info boxes ── */
+    .info-box {
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .info-box-violet { background: var(--violet-light); border-left: 3px solid var(--violet); }
+    .info-box-green { background: #DCFCE7; border-left: 3px solid var(--emerald); }
+    .info-box-orange { background: #FFF7ED; border-left: 3px solid var(--orange); }
+    .info-box-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .info-box p { font-size: 13px; color: var(--slate-700); }
+    .info-box strong { color: var(--slate-900); }
+
+    /* ── Table ── */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      background: var(--slate-100); padding: 10px 14px;
+      text-align: left; font-weight: 600; color: var(--slate-600);
+      border-bottom: 1px solid var(--slate-200);
+    }
+    td { padding: 9px 14px; border-bottom: 1px solid var(--slate-100); color: var(--slate-700); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--slate-50); }
+    .table-wrap { background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--slate-200); }
+
+    /* ── Commands ── */
+    .cmd-block {
+      background: var(--slate-900);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #86EFAC;
+      line-height: 2;
+    }
+    .cmd-comment { color: #64748B; }
+    .cmd-prompt { color: #60A5FA; }
+
+    /* ── Print styles ── */
+    @media print {
+      .print-btn { display: none !important; }
+      body { background: white; }
+      .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section { page-break-inside: avoid; }
+      .card { page-break-inside: avoid; box-shadow: none; border: 1px solid #E2E8F0; }
+      .file-tree { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* ── Separator ── */
+    hr { border: none; border-top: 1px solid var(--slate-200); margin: 32px 0; }
+
+    /* ── Flow diagram ── */
+    .flow {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; padding: 16px;
+      background: var(--slate-50); border-radius: 12px;
+      border: 1px solid var(--slate-200);
+    }
+    .flow-item {
+      background: white; border: 1px solid var(--slate-200);
+      border-radius: 10px; padding: 10px 14px;
+      text-align: center; font-size: 12px; font-weight: 600;
+      color: var(--slate-700);
+    }
+    .flow-item.violet { background: var(--violet); color: white; border-color: var(--violet); }
+    .flow-arrow { color: var(--slate-400); font-size: 18px; }
+
+    /* ── Context diagram ── */
+    .ctx-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    .ctx-box {
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 12px; font-weight: 600; text-align: center;
+      flex: 1; min-width: 100px;
+    }
+    .ctx-provider { background: var(--violet-light); color: var(--violet); border: 1px solid var(--violet); }
+    .ctx-context { background: #E0F2FE; color: #0369A1; border: 1px solid #7DD3FC; }
+    .ctx-page { background: var(--slate-100); color: var(--slate-700); border: 1px solid var(--slate-300); }
+  </style>
+</head>
+<body>
+
+<!-- Print button -->
+<button class="print-btn" onclick="window.print()">
+  🖨️ Salvar como PDF
+</button>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-logo">📡</div>
+  <h1>PromoRadar</h1>
+  <p class="subtitle">Documentação Completa do Projeto · Versão 2.0</p>
+  <div class="cover-tags">
+    <span class="cover-tag">Next.js 16</span>
+    <span class="cover-tag">React 19</span>
+    <span class="cover-tag">TypeScript</span>
+    <span class="cover-tag">TailwindCSS v4</span>
+    <span class="cover-tag">Mobile First</span>
+    <span class="cover-tag">Dark Mode</span>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-stat"><div class="num">12</div><div class="lbl">Telas</div></div>
+    <div class="cover-stat"><div class="num">40+</div><div class="lbl">Arquivos</div></div>
+    <div class="cover-stat"><div class="num">6</div><div class="lbl">Contexts</div></div>
+    <div class="cover-stat"><div class="num">17</div><div class="lbl">Features</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>📋 Índice</h2>
+    <div class="toc-grid">
+      <a href="#visao-geral"><div class="toc-num">1</div> Visão Geral do Projeto</a>
+      <a href="#tecnologias"><div class="toc-num">2</div> Tecnologias Utilizadas</a>
+      <a href="#estrutura"><div class="toc-num">3</div> Estrutura de Pastas</a>
+      <a href="#telas"><div class="toc-num">4</div> Telas do Aplicativo</a>
+      <a href="#features"><div class="toc-num">5</div> Funcionalidades Implementadas</a>
+      <a href="#arquitetura"><div class="toc-num">6</div> Arquitetura e Contexts</a>
+      <a href="#dados"><div class="toc-num">7</div> Dados Mockados</a>
+      <a href="#config"><div class="toc-num">8</div> Configurações Especiais</a>
+      <a href="#nav"><div class="toc-num">9</div> Navegação e Rotas</a>
+      <a href="#executar"><div class="toc-num">10</div> Como Executar</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 1. Visão Geral -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="visao-geral">
+    <div class="section-header">
+      <div class="section-icon">🎯</div>
+      <div>
+        <div class="section-num">SEÇÃO 1</div>
+        <div class="section-title">Visão Geral do Projeto</div>
+      </div>
+    </div>
+
+    <div class="info-box info-box-violet">
+      <div class="info-box-icon">💡</div>
+      <p><strong>PromoRadar</strong> é um aplicativo mobile-first de promoções de mercados e farmácias. O objetivo é transformar a experiência de compras em algo <strong>inteligente, personalizado e econômico</strong>, usando IA mockada, gamificação e dados colaborativos.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-emoji">🚀</div>
+          <div>
+            <div class="card-title">Objetivo do App</div>
+            <div class="card-subtitle">Proposta de valor principal</div>
+          </div>
+        </div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Alertar sobre promoções próximas ao usuário</li>
+          <li><span class="check">✓</span> Comparar preços entre lojas automaticamente</li>
+          <li><span class="check">✓</span> Aprender hábitos de compra com IA</li>
+          <li><span class="check">✓</span> Otimizar lista de compras por custo</li>
+          <li><span class="check">✓</span> Oferecer cashback e cupons exclusivos</li>
+          <li><span class="check">✓</span> Criar comunidade colaborativa de promoções</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-emoji">📅</div>
+          <div>
+            <div class="card-title">Versões do Projeto</div>
+            <div class="card-subtitle">Evolução do desenvolvimento</div>
+          </div>
+        </div>
+        <ul class="feature-list">
+          <li><span class="check">v1</span> Home + Busca + Filtros básicos</li>
+          <li><span class="check">v1</span> Tela de Favoritos e Alertas</li>
+          <li><span class="check">v1</span> Histórico de preço + Comparação entre lojas</li>
+          <li><span class="check">v1</span> Dark mode + Bottom navigation</li>
+          <li><span class="check">v2</span> IA de Recomendações na Home</li>
+          <li><span class="check">v2</span> 6 novas telas completas</li>
+          <li><span class="check">v2</span> Cashback, OCR, Chat IA, Gamificação</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box info-box-green">
+      <div class="info-box-icon">✅</div>
+      <p><strong>Status atual:</strong> MVP completo com dados mockados. Pronto para integração futura com <strong>Supabase + PostgreSQL</strong>, APIs de preços reais e notificações push.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 2. Tecnologias -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="tecnologias">
+    <div class="section-header">
+      <div class="section-icon">⚙️</div>
+      <div>
+        <div class="section-num">SEÇÃO 2</div>
+        <div class="section-title">Tecnologias Utilizadas</div>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="tech-card"><div class="emoji">▲</div><div class="name">Next.js</div><div class="version">v16.2.6 · App Router</div></div>
+      <div class="tech-card"><div class="emoji">⚛️</div><div class="name">React</div><div class="version">v19 · use(params)</div></div>
+      <div class="tech-card"><div class="emoji">📘</div><div class="name">TypeScript</div><div class="version">Tipagem estrita</div></div>
+      <div class="tech-card"><div class="emoji">🎨</div><div class="name">TailwindCSS</div><div class="version">v4 · CSS-based config</div></div>
+      <div class="tech-card"><div class="emoji">✏️</div><div class="name">Lucide React</div><div class="version">v1.14 · Ícones SVG</div></div>
+      <div class="tech-card"><div class="emoji">🔗</div><div class="name">clsx + twMerge</div><div class="version">Classes condicionais</div></div>
+    </div>
+
+    <div class="info-box info-box-orange">
+      <div class="info-box-icon">⚠️</div>
+      <p><strong>TailwindCSS v4 é diferente das versões anteriores!</strong> Não usa <code>tailwind.config.ts</code>. Toda a configuração fica no arquivo <code>globals.css</code> usando a sintaxe <code>@import "tailwindcss"</code> e <code>@theme { ... }</code>.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pacote</th><th>Função</th><th>Localização</th></tr></thead>
+        <tbody>
+          <tr><td><code>next</code></td><td>Framework principal, roteamento, SSR</td><td>package.json</td></tr>
+          <tr><td><code>react</code> / <code>react-dom</code></td><td>UI declarativa com hooks</td><td>package.json</td></tr>
+          <tr><td><code>typescript</code></td><td>Tipagem estática</td><td>tsconfig.json</td></tr>
+          <tr><td><code>tailwindcss</code></td><td>Estilos utilitários</td><td>globals.css</td></tr>
+          <tr><td><code>lucide-react</code></td><td>Biblioteca de ícones SVG</td><td>components/*</td></tr>
+          <tr><td><code>clsx</code></td><td>Classes condicionais em JS</td><td>lib/utils.ts</td></tr>
+          <tr><td><code>tailwind-merge</code></td><td>Merge inteligente de classes Tailwind</td><td>lib/utils.ts</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 3. Estrutura de Pastas -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="estrutura">
+    <div class="section-header">
+      <div class="section-icon">📁</div>
+      <div>
+        <div class="section-num">SEÇÃO 3</div>
+        <div class="section-title">Estrutura de Pastas</div>
+      </div>
+    </div>
+
+    <div class="info-box info-box-violet">
+      <div class="info-box-icon">📌</div>
+      <p>Arquivos em <strong style="color:#15803D">verde</strong> são <strong>novos (v2)</strong>. Arquivos em <strong style="color:#FCD34D">amarelo</strong> foram <strong>atualizados</strong>. Os demais existiam desde a v1.</p>
+    </div>
+
+    <div class="file-tree">
+<span class="ft-folder">promo-radar/</span>
+│
+├── <span class="ft-folder">src/</span>
+│   ├── <span class="ft-folder">app/</span>                        <span class="ft-comment">← Roteamento Next.js (App Router)</span>
+│   │   ├── <span class="ft-file">layout.tsx</span>              <span class="ft-comment">← Layout raiz: Header + BottomNav + Providers</span>
+│   │   ├── <span class="ft-file">page.tsx</span> <span class="ft-label ft-label-upd">atualizado</span>      <span class="ft-comment">← Home: AI cards + quick access + banners</span>
+│   │   ├── <span class="ft-file">globals.css</span> <span class="ft-label ft-label-upd">atualizado</span>   <span class="ft-comment">← Estilos globais + animações + dark mode</span>
+│   │   ├── <span class="ft-folder">favoritos/</span>
+│   │   │   └── <span class="ft-file">page.tsx</span>            <span class="ft-comment">← Lista de produtos favoritados</span>
+│   │   ├── <span class="ft-folder">produto/[id]/</span>
+│   │   │   └── <span class="ft-file">page.tsx</span>            <span class="ft-comment">← Detalhe do produto: gráfico, comparação</span>
+│   │   ├── <span class="ft-folder">notificacoes/</span>
+│   │   │   └── <span class="ft-file">page.tsx</span>            <span class="ft-comment">← Central de alertas com filtros</span>
+│   │   ├── <span class="ft-folder">perfil/</span>
+│   │   │   └── <span class="ft-file">page.tsx</span>            <span class="ft-comment">← Configurações do usuário</span>
+│   │   ├── <span class="ft-folder">lista/</span> <span class="ft-label">novo v2</span>
+│   │   │   └── <span class="ft-new">page.tsx</span>            <span class="ft-comment">← Lista de compras inteligente</span>
+│   │   ├── <span class="ft-folder">cashback/</span> <span class="ft-label">novo v2</span>
+│   │   │   └── <span class="ft-new">page.tsx</span>            <span class="ft-comment">← Dashboard cashback + cupons</span>
+│   │   ├── <span class="ft-folder">economia/</span> <span class="ft-label">novo v2</span>
+│   │   │   └── <span class="ft-new">page.tsx</span>            <span class="ft-comment">← Gráfico de economia + conquistas</span>
+│   │   ├── <span class="ft-folder">assistente/</span> <span class="ft-label">novo v2</span>
+│   │   │   └── <span class="ft-new">page.tsx</span>            <span class="ft-comment">← Chat com IA inteligente</span>
+│   │   ├── <span class="ft-folder">comunidade/</span> <span class="ft-label">novo v2</span>
+│   │   │   └── <span class="ft-new">page.tsx</span>            <span class="ft-comment">← Feed colaborativo + ranking + badges</span>
+│   │   └── <span class="ft-folder">encarte/</span> <span class="ft-label">novo v2</span>
+│   │       └── <span class="ft-new">page.tsx</span>            <span class="ft-comment">← Scanner OCR de encarte com IA</span>
+│   │
+│   ├── <span class="ft-folder">components/</span>               <span class="ft-comment">← Componentes reutilizáveis</span>
+│   │   ├── <span class="ft-folder">ui/</span>                   <span class="ft-comment">← Componentes base de interface</span>
+│   │   │   ├── <span class="ft-file">Badge.tsx</span>           <span class="ft-comment">← Tag colorida (desconto, categoria)</span>
+│   │   │   ├── <span class="ft-file">Button.tsx</span>          <span class="ft-comment">← Botão com variantes</span>
+│   │   │   ├── <span class="ft-file">Skeleton.tsx</span>        <span class="ft-comment">← Loading placeholder</span>
+│   │   │   └── <span class="ft-file">EmptyState.tsx</span>      <span class="ft-comment">← Tela vazia com emoji</span>
+│   │   ├── <span class="ft-folder">layout/</span>               <span class="ft-comment">← Componentes de estrutura da página</span>
+│   │   │   ├── <span class="ft-file">Header.tsx</span> <span class="ft-label ft-label-upd">atualizado</span>   <span class="ft-comment">← Logo, localização, dark mode, alertas</span>
+│   │   │   ├── <span class="ft-file">BottomNav.tsx</span> <span class="ft-label ft-label-upd">atualizado</span> <span class="ft-comment">← 5 abas + botão IA central elevado</span>
+│   │   │   └── <span class="ft-file">Providers.tsx</span> <span class="ft-label ft-label-upd">atualizado</span> <span class="ft-comment">← Envolve toda a app com contexts</span>
+│   │   ├── <span class="ft-folder">home/</span>                 <span class="ft-comment">← Componentes da tela inicial</span>
+│   │   │   ├── <span class="ft-file">SearchBar.tsx</span>       <span class="ft-comment">← Barra de busca em tempo real</span>
+│   │   │   ├── <span class="ft-file">BannerCarousel.tsx</span>  <span class="ft-comment">← Banners deslizantes com gradiente</span>
+│   │   │   ├── <span class="ft-file">CategoryFilter.tsx</span>  <span class="ft-comment">← Filtro de categorias horizontal</span>
+│   │   │   ├── <span class="ft-file">NearbyStores.tsx</span>    <span class="ft-comment">← Cards de lojas próximas</span>
+│   │   │   ├── <span class="ft-file">ProductCard.tsx</span>     <span class="ft-comment">← Card de produto com favorito/alerta</span>
+│   │   │   └── <span class="ft-new">AIRecommendations.tsx</span> <span class="ft-label">novo v2</span> <span class="ft-comment">← Seção Radar IA</span>
+│   │   ├── <span class="ft-folder">produto/</span>              <span class="ft-comment">← Componentes da tela de detalhe</span>
+│   │   │   ├── <span class="ft-file">PriceChart.tsx</span>      <span class="ft-comment">← Gráfico SVG histórico de preços</span>
+│   │   │   └── <span class="ft-file">StoreComparison.tsx</span> <span class="ft-comment">← Comparação de preços entre lojas</span>
+│   │   └── <span class="ft-folder">notificacoes/</span>
+│   │       └── <span class="ft-file">NotificationItem.tsx</span> <span class="ft-comment">← Item de alerta individual</span>
+│   │
+│   ├── <span class="ft-folder">context/</span>                  <span class="ft-comment">← Estado global (React Context API)</span>
+│   │   ├── <span class="ft-file">ThemeContext.tsx</span>        <span class="ft-comment">← Dark/light mode</span>
+│   │   ├── <span class="ft-file">FavoritesContext.tsx</span>    <span class="ft-comment">← Produtos favoritos e alertas</span>
+│   │   ├── <span class="ft-file">ToastContext.tsx</span>        <span class="ft-comment">← Notificações toast</span>
+│   │   ├── <span class="ft-new">ShoppingListContext.tsx</span> <span class="ft-label">novo v2</span> <span class="ft-comment">← Lista de compras</span>
+│   │   └── <span class="ft-new">CashbackContext.tsx</span> <span class="ft-label">novo v2</span>     <span class="ft-comment">← Saldo e cupons cashback</span>
+│   │
+│   ├── <span class="ft-folder">hooks/</span> <span class="ft-label">novo v2</span>             <span class="ft-comment">← Custom React Hooks</span>
+│   │   ├── <span class="ft-new">useDebounce.ts</span>          <span class="ft-comment">← Atrasa execução (busca em tempo real)</span>
+│   │   └── <span class="ft-new">useLocalStorage.ts</span>      <span class="ft-comment">← Persiste dados no navegador</span>
+│   │
+│   ├── <span class="ft-folder">services/</span> <span class="ft-label">novo v2</span>          <span class="ft-comment">← Lógica de negócio e APIs externas</span>
+│   │   └── <span class="ft-new">ai.service.ts</span>           <span class="ft-comment">← IA mockada: respostas inteligentes</span>
+│   │
+│   ├── <span class="ft-folder">lib/</span>                      <span class="ft-comment">← Utilitários e dados</span>
+│   │   ├── <span class="ft-file">mock-data.ts</span> <span class="ft-label ft-label-upd">atualizado</span>   <span class="ft-comment">← Todos os dados fictícios do app</span>
+│   │   └── <span class="ft-file">utils.ts</span>               <span class="ft-comment">← Funções: formatPrice, cn, etc.</span>
+│   │
+│   └── <span class="ft-folder">types/</span>                    <span class="ft-comment">← Definições TypeScript</span>
+│       └── <span class="ft-file">index.ts</span> <span class="ft-label ft-label-upd">atualizado</span>      <span class="ft-comment">← Todos os tipos e interfaces</span>
+│
+├── <span class="ft-file">package.json</span>                <span class="ft-comment">← Dependências e scripts</span>
+├── <span class="ft-file">tsconfig.json</span>               <span class="ft-comment">← Configuração TypeScript + alias @/*</span>
+├── <span class="ft-file">next.config.ts</span>              <span class="ft-comment">← Configuração do Next.js</span>
+└── <span class="ft-file">DOCUMENTACAO.html</span>           <span class="ft-comment">← Este arquivo!</span>
+    </div>
+
+    <br/>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px">📂 O que cada pasta faz</div>
+        <ul class="feature-list">
+          <li><span class="check">📁</span> <strong>app/</strong> — Cada pasta = uma URL do app</li>
+          <li><span class="check">📁</span> <strong>components/</strong> — Peças visuais reutilizáveis</li>
+          <li><span class="check">📁</span> <strong>context/</strong> — Estado compartilhado entre telas</li>
+          <li><span class="check">📁</span> <strong>hooks/</strong> — Lógica reutilizável de React</li>
+          <li><span class="check">📁</span> <strong>services/</strong> — Comunicação com APIs externas</li>
+          <li><span class="check">📁</span> <strong>lib/</strong> — Dados e funções auxiliares</li>
+          <li><span class="check">📁</span> <strong>types/</strong> — Formato de cada dado TypeScript</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px">📄 Arquivos raiz importantes</div>
+        <ul class="feature-list">
+          <li><span class="check">📄</span> <strong>layout.tsx</strong> — Estrutura de todas as páginas</li>
+          <li><span class="check">📄</span> <strong>globals.css</strong> — Estilos globais do app</li>
+          <li><span class="check">📄</span> <strong>tsconfig.json</strong> — Alias <code>@/*</code> para imports</li>
+          <li><span class="check">📄</span> <strong>next.config.ts</strong> — Config do Next.js</li>
+          <li><span class="check">📄</span> <strong>package.json</strong> — Scripts e dependências</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 4. Telas -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="telas">
+    <div class="section-header">
+      <div class="section-icon">📱</div>
+      <div>
+        <div class="section-num">SEÇÃO 4</div>
+        <div class="section-title">Telas do Aplicativo</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+
+      <!-- Home -->
+      <div class="screen-card">
+        <div class="screen-top">
+          <div class="screen-emoji">🏠</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="screen-title">Home</div>
+              <span class="screen-upd-tag">atualizado</span>
+            </div>
+            <div class="screen-path">/ (raiz)</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-feature">Busca em tempo real com debounce</div>
+          <div class="screen-feature">Banner carrossel com gradientes</div>
+          <div class="screen-feature">Cards rápidos (Economia, Encarte, Comunidade) <strong>NOVO</strong></div>
+          <div class="screen-feature">Seção Radar IA com recomendações <strong>NOVO</strong></div>
+          <div class="screen-feature">Lojas próximas + filtros de distância</div>
+          <div class="screen-feature">Grid de produtos com filtro por categoria</div>
+        </div>
+      </div>
+
+      <!-- Lista -->
+      <div class="screen-card">
+        <div class="screen-top">
+          <div class="screen-emoji">🛒</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="screen-title">Lista Inteligente</div>
+              <span class="screen-new-tag">novo v2</span>
+            </div>
+            <div class="screen-path">/lista</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-feature">Abas Semanal / Mensal</div>
+          <div class="screen-feature">Checkbox de itens com progresso visual</div>
+          <div class="screen-feature">Controle de quantidade (+ / −)</div>
+          <div class="screen-feature">Adição rápida de produtos comuns</div>
+          <div class="screen-feature">Botão "Otimizar Compra" com modal</div>
+          <div class="screen-feature">Modal mostra divisão por loja + economia</div>
+        </div>
+      </div>
+
+      <!-- Assistente IA -->
+      <div class="screen-card">
+        <div class="screen-top">
+          <div class="screen-emoji">✨</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="screen-title">Assistente IA</div>
+              <span class="screen-new-tag">novo v2</span>
+            </div>
+            <div class="screen-path">/assistente</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-feature">Chat estilo ChatGPT com bolhas</div>
+          <div class="screen-feature">Perguntas sugeridas na tela inicial</div>
+          <div class="screen-feature">Animação de "digitando..." (três pontos)</div>
+          <div class="screen-feature">Respostas inteligentes baseadas em palavras-chave</div>
+          <div class="screen-feature">Chips de perguntas rápidas durante conversa</div>
+          <div class="screen-feature">Texto em negrito com renderização Markdown</div>
+        </div>
+      </div>
+
+      <!-- Cashback -->
+      <div class="screen-card">
+        <div class="screen-top">
+          <div class="screen-emoji">💳</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="screen-title">Cashback</div>
+              <span class="screen-new-tag">novo v2</span>
+            </div>
+            <div class="screen-path">/cashback</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-feature">Card de saldo (visual estilo Nubank)</div>
+          <div class="screen-feature">Botão de resgate do saldo</div>
+          <div class="screen-feature">Grid de cupons coloridos com código</div>
+          <div class="screen-feature">Copiar código do cupom com um toque</div>
+          <div class="screen-feature">Histórico de transações com status</div>
+          <div class="screen-feature">Lojas parceiras com % de cashback</div>
+        </div>
+      </div>
+
+      <!-- Economia -->
+      <div class="screen-card">
+        <div class="screen-top">
+          <div class="screen-emoji">📊</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="screen-title">Modo Economia</div>
+              <span class="screen-new-tag">novo v2</span>
+            </div>
+            <div class="screen-path">/economia</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-feature">Card hero com economia do mês</div>
+          <div class="screen-feature">Barra de progresso de meta mensal</div>
+          <div class="screen-feature">Gráfico de barras SVG — 6 meses</div>
+          <div class="screen-feature">Histórico mensal detalhado</div>
+          <div class="screen-feature">Grid de conquistas (achievements)</div>
+          <div class="screen-feature">Badges com raridade: comum/raro/épico/lendário</div>
+        </div>
+      </div>
+
+      <!-- Comunidade -->
+      <div class="screen-card">
+        <div class="screen-top">
+          <div class="screen-emoji">👥</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="screen-title">Comunidade</div>
+              <span class="screen-new-tag">novo v2</span>
+            </div>
+            <div class="screen-path">/comunidade</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-feature">Feed de promoções enviadas por usuários</div>
+          <div class="screen-feature">Sistema de votos (curtir promoção)</div>
+          <div class="screen-feature">Ranking dos maiores caçadores</div>
+          <div class="screen-feature">Badges de conquistas com raridade</div>
+          <div class="screen-feature">Perfil do usuário no ranking (#8)</div>
+          <div class="screen-feature">Verificação de promoções reais</div>
+        </div>
+      </div>
+
+      <!-- Encarte -->
+      <div class="screen-card">
+        <div class="screen-top">
+          <div class="screen-emoji">🤖</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="screen-title">Leitor de Encarte</div>
+              <span class="screen-new-tag">novo v2</span>
+            </div>
+            <div class="screen-path">/encarte</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-feature">Zona de upload com drag-and-drop visual</div>
+          <div class="screen-feature">Opção de tirar foto</div>
+          <div class="screen-feature">Simulação de 3 fases de processamento IA</div>
+          <div class="screen-feature">Lista de produtos extraídos com preços</div>
+          <div class="screen-feature">Botão "Adicionar todos à lista"</div>
+          <div class="screen-feature">Animação de loading com spinner e steps</div>
+        </div>
+      </div>
+
+      <!-- Produto -->
+      <div class="screen-card">
+        <div class="screen-top">
+          <div class="screen-emoji">🏷️</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="screen-title">Detalhe do Produto</div>
+              <span class="screen-upd-tag">existente</span>
+            </div>
+            <div class="screen-path">/produto/[id]</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-feature">Gráfico SVG de histórico de preços 30d</div>
+          <div class="screen-feature">Badges: "Menor preço" / "Abaixo da média"</div>
+          <div class="screen-feature">Comparação de preços entre 6 lojas</div>
+          <div class="screen-feature">Botão de favoritar e ativar alerta</div>
+          <div class="screen-feature">Aviso de expiração da promoção</div>
+          <div class="screen-feature">Frequência de compra do usuário</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 5. Funcionalidades -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="features">
+    <div class="section-header">
+      <div class="section-icon">🎮</div>
+      <div>
+        <div class="section-num">SEÇÃO 5</div>
+        <div class="section-title">Funcionalidades Implementadas</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🤖</div><div><div class="card-title">IA de Compras</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Recomendações personalizadas na home</li>
+          <li><span class="check">✓</span> Badges: menor preço, comprar logo, favorito caiu</li>
+          <li><span class="check">✓</span> Chat com respostas baseadas em palavras-chave</li>
+          <li><span class="check">✓</span> Frequência de compra por produto</li>
+          <li><span class="check">✓</span> Previsão de necessidade de recompra</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">📈</div><div><div class="card-title">Histórico de Preços</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Gráfico SVG de 30 dias</li>
+          <li><span class="check">✓</span> Menor preço histórico registrado</li>
+          <li><span class="check">✓</span> Média de preço regional</li>
+          <li><span class="check">✓</span> Badge "Menor preço" / "Abaixo da média"</li>
+          <li><span class="check">✓</span> Status: lowest / below_avg / above_avg</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🛒</div><div><div class="card-title">Lista Inteligente</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Listas semanal e mensal separadas</li>
+          <li><span class="check">✓</span> Adicionar, remover, checar itens</li>
+          <li><span class="check">✓</span> Controle de quantidade</li>
+          <li><span class="check">✓</span> Otimizador de compra por loja</li>
+          <li><span class="check">✓</span> Cálculo de economia total estimada</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">💳</div><div><div class="card-title">Cashback e Cupons</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Saldo de cashback acumulado</li>
+          <li><span class="check">✓</span> Resgate com um toque</li>
+          <li><span class="check">✓</span> 6 cupons de parceiros com código</li>
+          <li><span class="check">✓</span> Histórico de transações com status</li>
+          <li><span class="check">✓</span> % de cashback por loja parceira</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🏆</div><div><div class="card-title">Gamificação</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Sistema de pontos e níveis</li>
+          <li><span class="check">✓</span> 8 conquistas com progresso</li>
+          <li><span class="check">✓</span> Raridades: comum, raro, épico, lendário</li>
+          <li><span class="check">✓</span> Ranking dos 6 maiores usuários</li>
+          <li><span class="check">✓</span> 6 badges desbloqueáveis</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">👥</div><div><div class="card-title">Sistema Colaborativo</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Feed de promoções da comunidade</li>
+          <li><span class="check">✓</span> Sistema de votos em promoções</li>
+          <li><span class="check">✓</span> Verificação de promoções reais</li>
+          <li><span class="check">✓</span> Perfil com nível e badge</li>
+          <li><span class="check">✓</span> Bairro/localização de cada promoção</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🔍</div><div><div class="card-title">OCR / Encarte</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Upload de imagem / PDF</li>
+          <li><span class="check">✓</span> Simulação de 3 fases com IA</li>
+          <li><span class="check">✓</span> 6 produtos extraídos do encarte</li>
+          <li><span class="check">✓</span> Adicionar todos à lista de compras</li>
+          <li><span class="check">✓</span> Animação profissional de processamento</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🎨</div><div><div class="card-title">UX / UI Premium</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">✓</span> Dark mode com toggle no header</li>
+          <li><span class="check">✓</span> Animações CSS (slide, fade, scale)</li>
+          <li><span class="check">✓</span> Toast notifications (sucesso/erro/info)</li>
+          <li><span class="check">✓</span> Skeleton loading em todos os cards</li>
+          <li><span class="check">✓</span> Empty states com ilustrações</li>
+          <li><span class="check">✓</span> Mobile-first responsivo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 6. Arquitetura -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="arquitetura">
+    <div class="section-header">
+      <div class="section-icon">🏗️</div>
+      <div>
+        <div class="section-num">SEÇÃO 6</div>
+        <div class="section-title">Arquitetura e Contexts</div>
+      </div>
+    </div>
+
+    <div class="info-box info-box-violet">
+      <div class="info-box-icon">🔑</div>
+      <p>O app usa <strong>React Context API</strong> para compartilhar estado entre telas sem precisar passar dados por props. Todos os contexts ficam dentro de <code>Providers.tsx</code> que envolve toda a aplicação.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title" style="margin-bottom:14px">🧅 Hierarquia de Providers (layout.tsx)</div>
+      <div class="flow">
+        <div class="flow-item violet">ThemeProvider</div>
+        <div class="flow-arrow">›</div>
+        <div class="flow-item violet">FavoritesProvider</div>
+        <div class="flow-arrow">›</div>
+        <div class="flow-item violet">ToastProvider</div>
+        <div class="flow-arrow">›</div>
+        <div class="flow-item violet">ShoppingListProvider</div>
+        <div class="flow-arrow">›</div>
+        <div class="flow-item violet">CashbackProvider</div>
+        <div class="flow-arrow">›</div>
+        <div class="flow-item">App inteiro</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🎨</div><div><div class="card-title">ThemeContext</div><div class="card-subtitle">context/ThemeContext.tsx</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">→</span> <code>theme</code>: 'light' | 'dark'</li>
+          <li><span class="check">→</span> <code>toggleTheme()</code>: alterna o tema</li>
+          <li><span class="check">→</span> Persiste no localStorage</li>
+          <li><span class="check">→</span> Lê preferência do sistema (prefers-color-scheme)</li>
+          <li><span class="check">→</span> Adiciona/remove classe <code>.dark</code> no HTML</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">❤️</div><div><div class="card-title">FavoritesContext</div><div class="card-subtitle">context/FavoritesContext.tsx</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">→</span> <code>products</code>: lista completa de produtos</li>
+          <li><span class="check">→</span> <code>toggleFavorite(id)</code>: adiciona/remove favorito</li>
+          <li><span class="check">→</span> <code>toggleAlert(id)</code>: ativa/desativa alerta</li>
+          <li><span class="check">→</span> <code>isFavorite(id)</code>: verifica se é favorito</li>
+          <li><span class="check">→</span> <code>hasAlert(id)</code>: verifica se tem alerta</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🔔</div><div><div class="card-title">ToastContext</div><div class="card-subtitle">context/ToastContext.tsx</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">→</span> <code>showToast(msg, type)</code>: exibe notificação</li>
+          <li><span class="check">→</span> Types: 'success' | 'error' | 'info'</li>
+          <li><span class="check">→</span> Auto-fecha após 3.5 segundos</li>
+          <li><span class="check">→</span> Animação slide-in da direita</li>
+          <li><span class="check">→</span> Renderizado no ToastContainer interno</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🛒</div><div><div class="card-title">ShoppingListContext <span class="badge badge-new">novo</span></div><div class="card-subtitle">context/ShoppingListContext.tsx</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">→</span> <code>lists</code>: semanal e mensal</li>
+          <li><span class="check">→</span> <code>toggleItem(listId, itemId)</code>: checar/deschecar</li>
+          <li><span class="check">→</span> <code>addItem(listId, item)</code>: adicionar produto</li>
+          <li><span class="check">→</span> <code>removeItem(listId, itemId)</code>: remover</li>
+          <li><span class="check">→</span> <code>updateQuantity(listId, itemId, qty)</code></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">💳</div><div><div class="card-title">CashbackContext <span class="badge badge-new">novo</span></div><div class="card-subtitle">context/CashbackContext.tsx</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">→</span> <code>balance</code>: saldo de cashback</li>
+          <li><span class="check">→</span> <code>coupons</code>: lista de cupons</li>
+          <li><span class="check">→</span> <code>transactions</code>: histórico</li>
+          <li><span class="check">→</span> <code>useCoupon(id)</code>: marcar como usado</li>
+          <li><span class="check">→</span> <code>withdraw()</code>: resgatar saldo</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🔧</div><div><div class="card-title">Custom Hooks <span class="badge badge-new">novo</span></div><div class="card-subtitle">hooks/</div></div></div>
+        <ul class="feature-list">
+          <li><span class="check">→</span> <code>useDebounce(value, delay)</code>: atrasa execução</li>
+          <li><span class="check">→</span> Usado na busca para evitar req desnecessárias</li>
+          <li><span class="check">→</span> <code>useLocalStorage(key, initial)</code>: persiste dados</li>
+          <li><span class="check">→</span> Lê do localStorage no mount</li>
+          <li><span class="check">→</span> Salva automaticamente a cada mudança</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 7. Dados Mockados -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="dados">
+    <div class="section-header">
+      <div class="section-icon">🗄️</div>
+      <div>
+        <div class="section-num">SEÇÃO 7</div>
+        <div class="section-title">Dados Mockados</div>
+      </div>
+    </div>
+
+    <div class="info-box info-box-violet">
+      <div class="info-box-icon">📋</div>
+      <p>Todo o conteúdo do app vem do arquivo <strong><code>src/lib/mock-data.ts</code></strong>. Quando o app for integrado com Supabase, basta substituir os imports desse arquivo pelas chamadas da API real.</p>
+    </div>
+
+    <div class="table-wrap" style="margin-bottom:16px">
+      <table>
+        <thead><tr><th>Constante</th><th>Tipo</th><th>Qtd</th><th>O que contém</th></tr></thead>
+        <tbody>
+          <tr><td><code>mockStores</code></td><td>Store[]</td><td>6</td><td>Carrefour, Extra, Pão de Açúcar, Droga Raia, Ultrafarma, Mercadinho Bom Preço</td></tr>
+          <tr><td><code>mockProducts</code></td><td>Product[]</td><td>12</td><td>Coca-Cola, Arroz, Nescafé, Dipirona, Shampoo, Leite, Feijão, Detergente, Iogurte, Sabonete, Óleo, Macarrão</td></tr>
+          <tr><td><code>mockNotifications</code></td><td>Notification[]</td><td>6</td><td>Alertas de queda de preço e sugestões da IA</td></tr>
+          <tr><td><code>mockUserProfile</code></td><td>UserProfile</td><td>1</td><td>Leonardo, Jardins SP, metas e pontuação</td></tr>
+          <tr><td><code>promoBanners</code></td><td>Banner[]</td><td>3</td><td>Banners do carrossel com gradientes</td></tr>
+          <tr><td><code>mockShoppingLists</code></td><td>ShoppingList[]</td><td>2</td><td>Lista semanal (6 itens) e mensal (8 itens)</td></tr>
+          <tr><td><code>mockCashbackBalance</code></td><td>number</td><td>1</td><td>R$ 23,47 de saldo disponível</td></tr>
+          <tr><td><code>mockCashbackTransactions</code></td><td>Transaction[]</td><td>6</td><td>Histórico de cashback por loja</td></tr>
+          <tr><td><code>mockCashbackCoupons</code></td><td>Coupon[]</td><td>6</td><td>Cupons coloridos por parceiro</td></tr>
+          <tr><td><code>mockMonthlySavings</code></td><td>MonthlySavings[]</td><td>6</td><td>Dez/24 a Mai/25 — dados para gráfico</td></tr>
+          <tr><td><code>mockAchievements</code></td><td>Achievement[]</td><td>8</td><td>Conquistas com progresso e raridade</td></tr>
+          <tr><td><code>mockCommunityPosts</code></td><td>Post[]</td><td>5</td><td>Promoções enviadas por usuários</td></tr>
+          <tr><td><code>mockUserRankings</code></td><td>Ranking[]</td><td>6</td><td>Top 5 + posição do usuário (#8)</td></tr>
+          <tr><td><code>mockUserBadges</code></td><td>Badge[]</td><td>6</td><td>Badges desbloqueáveis com raridade</td></tr>
+          <tr><td><code>mockAIRecommendations</code></td><td>AIRec[]</td><td>4</td><td>Sugestões personalizadas da IA</td></tr>
+          <tr><td><code>mockEncarteProducts</code></td><td>EncarteProduct[]</td><td>6</td><td>Produtos extraídos do encarte simulado</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 8. Configurações -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="config">
+    <div class="section-header">
+      <div class="section-icon">⚙️</div>
+      <div>
+        <div class="section-num">SEÇÃO 8</div>
+        <div class="section-title">Configurações Especiais</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-emoji">🎨</div><div><div class="card-title">globals.css — Configuração TailwindCSS v4</div><div class="card-subtitle">src/app/globals.css</div></div></div>
+      <div class="config-block">
+<span class="config-comment">/* Importa todo o Tailwind v4 (diferente das versões anteriores!) */</span>
+<span class="config-key">@import</span> <span class="config-str">"tailwindcss"</span>;
+
+<span class="config-comment">/* Dark mode baseado em classe CSS .dark no elemento html */</span>
+<span class="config-key">@variant</span> dark (<span class="config-str">&:where(.dark, .dark *)</span>);
+
+<span class="config-comment">/* Cores e fontes personalizadas do projeto */</span>
+<span class="config-key">@theme</span> {
+  <span class="config-key">--color-background</span>: <span class="config-str">#F9FAFB</span>;
+  <span class="config-key">--color-foreground</span>: <span class="config-str">#0F172A</span>;
+  <span class="config-key">--font-sans</span>: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+<span class="config-comment">/* Utilitários personalizados */</span>
+<span class="config-key">@utility</span> scrollbar-hide { scrollbar-width: none; }
+<span class="config-key">@utility</span> animate-slide-in { animation: slide-in 0.3s ease-out; }
+<span class="config-key">@utility</span> animate-slide-up { animation: slide-up 0.35s ease-out; }
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-emoji">📘</div><div><div class="card-title">tsconfig.json — Alias de importação</div><div class="card-subtitle">raiz do projeto</div></div></div>
+      <div class="config-block">
+<span class="config-comment">/* Em vez de escrever: ../../components/ui/Button */</span>
+<span class="config-comment">/* Você escreve: @/components/ui/Button            */</span>
+{
+  <span class="config-key">"compilerOptions"</span>: {
+    <span class="config-key">"paths"</span>: {
+      <span class="config-str">"@/*"</span>: [<span class="config-str">"./src/*"</span>]
+    }
+  }
+}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-emoji">🌙</div><div><div class="card-title">Dark Mode — Como funciona</div><div class="card-subtitle">ThemeContext.tsx + globals.css</div></div></div>
+      <ul class="feature-list">
+        <li><span class="check">1</span> ThemeContext lê a preferência do sistema com <code>window.matchMedia('prefers-color-scheme: dark')</code></li>
+        <li><span class="check">2</span> Salva a preferência em <code>localStorage</code> para persistir entre sessões</li>
+        <li><span class="check">3</span> Adiciona ou remove a classe <code>.dark</code> no elemento <code>&lt;html&gt;</code></li>
+        <li><span class="check">4</span> globals.css define <code>@variant dark</code> que aplica estilos em todos os filhos de <code>.dark</code></li>
+        <li><span class="check">5</span> Componentes usam classes como <code>dark:bg-slate-800</code> e <code>dark:text-white</code></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-emoji">🛠️</div><div><div class="card-title">Função cn() — Classes condicionais</div><div class="card-subtitle">src/lib/utils.ts</div></div></div>
+      <div class="config-block">
+<span class="config-comment">/* Combina clsx + twMerge para classes Tailwind */</span>
+export function <span class="config-key">cn</span>(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+<span class="config-comment">/* Uso: aplica classe só se condição for verdadeira */</span>
+className={cn(
+  'px-4 py-2 rounded-xl text-sm',
+  isActive && <span class="config-str">'bg-violet-600 text-white'</span>,
+  !isActive && <span class="config-str">'bg-slate-100 text-slate-600'</span>
+)}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-emoji">⚡</div><div><div class="card-title">suppressHydrationWarning — Por que existe?</div><div class="card-subtitle">src/app/layout.tsx</div></div></div>
+      <div class="config-block">
+<span class="config-comment">/* No HTML do layout: */</span>
+&lt;html suppressHydrationWarning&gt;
+
+<span class="config-comment">/* Por que? O Next.js renderiza no servidor sem saber o tema. */</span>
+<span class="config-comment">/* No cliente, o ThemeContext adiciona a classe .dark.       */</span>
+<span class="config-comment">/* Isso causaria um "hydration mismatch" — o atributo       */</span>
+<span class="config-comment">/* suppressHydrationWarning suprime esse aviso específico.  */</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 9. Navegação -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="nav">
+    <div class="section-header">
+      <div class="section-icon">🗺️</div>
+      <div>
+        <div class="section-num">SEÇÃO 9</div>
+        <div class="section-title">Navegação e Rotas</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px">📌 Bottom Navigation — 5 abas</div>
+      <div class="flow">
+        <div class="flow-item">🏠 Início<br/><small>/</small></div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-item">🛒 Lista<br/><small>/lista</small></div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-item violet">✨ IA<br/><small>/assistente</small></div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-item">💳 Cashback<br/><small>/cashback</small></div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-item">👤 Perfil<br/><small>/perfil</small></div>
+      </div>
+      <p style="font-size:12px;color:var(--slate-500);margin-top:12px">O botão IA central é levemente elevado (−5px) e tem background violeta, criando o efeito visual de ação principal.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Rota</th><th>Tipo</th><th>Acessível por</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><code>/</code></td><td>Static</td><td>BottomNav · Logo</td><td><span class="badge badge-violet">existente</span></td></tr>
+          <tr><td><code>/lista</code></td><td>Static</td><td>BottomNav</td><td><span class="badge badge-new">novo v2</span></td></tr>
+          <tr><td><code>/assistente</code></td><td>Static</td><td>BottomNav (centro)</td><td><span class="badge badge-new">novo v2</span></td></tr>
+          <tr><td><code>/cashback</code></td><td>Static</td><td>BottomNav</td><td><span class="badge badge-new">novo v2</span></td></tr>
+          <tr><td><code>/perfil</code></td><td>Static</td><td>BottomNav</td><td><span class="badge badge-violet">existente</span></td></tr>
+          <tr><td><code>/economia</code></td><td>Static</td><td>Home (card), Comunidade</td><td><span class="badge badge-new">novo v2</span></td></tr>
+          <tr><td><code>/comunidade</code></td><td>Static</td><td>Home (card), Economia</td><td><span class="badge badge-new">novo v2</span></td></tr>
+          <tr><td><code>/encarte</code></td><td>Static</td><td>Home (card)</td><td><span class="badge badge-new">novo v2</span></td></tr>
+          <tr><td><code>/favoritos</code></td><td>Static</td><td>—</td><td><span class="badge badge-violet">existente</span></td></tr>
+          <tr><td><code>/notificacoes</code></td><td>Static</td><td>Header (sino)</td><td><span class="badge badge-violet">existente</span></td></tr>
+          <tr><td><code>/produto/[id]</code></td><td>Dynamic</td><td>Cards de produto</td><td><span class="badge badge-violet">existente</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 10. Como Executar -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section" id="executar">
+    <div class="section-header">
+      <div class="section-icon">▶️</div>
+      <div>
+        <div class="section-num">SEÇÃO 10</div>
+        <div class="section-title">Como Executar o Projeto</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">💻</div><div><div class="card-title">Desenvolvimento</div><div class="card-subtitle">Modo com hot-reload</div></div></div>
+        <div class="cmd-block">
+<span class="cmd-comment"># 1. Entrar na pasta do projeto</span>
+<span class="cmd-prompt">cd</span> "Documents/Claude code teste/promo-radar"
+
+<span class="cmd-comment"># 2. Instalar dependências (apenas na 1ª vez)</span>
+<span class="cmd-prompt">npm</span> install
+
+<span class="cmd-comment"># 3. Iniciar servidor de desenvolvimento</span>
+<span class="cmd-prompt">npm</span> run dev
+
+<span class="cmd-comment"># 4. Abrir no navegador</span>
+http://localhost:3000
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-emoji">🏗️</div><div><div class="card-title">Produção</div><div class="card-subtitle">Build otimizado</div></div></div>
+        <div class="cmd-block">
+<span class="cmd-comment"># Gerar build de produção</span>
+<span class="cmd-prompt">npm</span> run build
+
+<span class="cmd-comment"># Verificar erros TypeScript</span>
+<span class="cmd-prompt">npm</span> run lint
+
+<span class="cmd-comment"># Resultado esperado:</span>
+<span style="color:#86EFAC">✓ Compiled successfully</span>
+<span style="color:#86EFAC">✓ 12 routes compiled</span>
+<span style="color:#86EFAC">✓ No TypeScript errors</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-emoji">🚀</div><div><div class="card-title">Próximos passos para produção real</div></div></div>
+      <div class="grid-2">
+        <ul class="feature-list">
+          <li><span class="check">→</span> Criar conta no <strong>Supabase</strong> (banco de dados)</li>
+          <li><span class="check">→</span> Substituir mock-data.ts por chamadas API</li>
+          <li><span class="check">→</span> Implementar auth com Google/Apple via Supabase</li>
+          <li><span class="check">→</span> Configurar push notifications reais</li>
+        </ul>
+        <ul class="feature-list">
+          <li><span class="check">→</span> Integrar OCR real (ex: Google Vision API)</li>
+          <li><span class="check">→</span> Conectar Claude API para IA real</li>
+          <li><span class="check">→</span> Deploy na <strong>Vercel</strong> (gratuito para Next.js)</li>
+          <li><span class="check">→</span> Configurar geolocalização real com GPS</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box info-box-green">
+      <div class="info-box-icon">✅</div>
+      <p><strong>Build atual:</strong> 12 rotas compiladas com sucesso, zero erros TypeScript. O app está pronto para rodar no navegador com <code>npm run dev</code>.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:32px 0 16px;border-top:1px solid var(--slate-200)">
+    <p style="font-size:13px;color:var(--slate-400)">
+      📡 <strong>PromoRadar v2.0</strong> · Next.js 16 · React 19 · TypeScript · TailwindCSS v4
+    </p>
+    <p style="font-size:12px;color:var(--slate-400);margin-top:6px">
+      Documentação gerada automaticamente · Projeto criado com Claude Code
+    </p>
+  </div>
+
+</div>
+
+<script>
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.querySelector(a.getAttribute('href'));
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
